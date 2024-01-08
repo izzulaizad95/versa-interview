@@ -1,0 +1,46 @@
+{
+  "name": "versa-interview",
+  "version": "1.0.0",
+  "description": "Versa take home interview question",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "node --no-warnings --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc -p tsconfig.build.json"
+  },
+  "jest": {
+    "transform": {},
+    "preset": "ts-jest/presets/default-esm",
+    "testEnvironment": "node",
+    "globals": {
+      "ts-jest": {
+        "useESM": true
+      }
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/izzulaizad95/versa-interview.git"
+  },
+  "keywords": [
+    "versa"
+  ],
+  "author": "Izzul Aizad",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/izzulaizad95/versa-interview/issues"
+  },
+  "homepage": "https://github.com/izzulaizad95/versa-interview#readme",
+  "devDependencies": {
+    "@types/jest": "^29.5.11",
+    "@types/node": "^20.10.6",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "axios": "^1.6.5"
+  }
+}
