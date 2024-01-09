@@ -93,19 +93,12 @@ const processCharacters = async (
 };
 
 // Output the result to a file named output.json .
-const writeToFile = async (data: CharacterByGender[]): Promise<void> => {
-  fs.writeFile(OUTPUT_FILE_PATH, JSON.stringify(data, null, 2), (error) => {
-    if (error) {
-      console.error(`Error writing file: ${error.message}`);
-      throw error;
-    } else {
-      console.log("File written successfully!");
-    }
-  });
+const writeToFile = (data: CharacterByGender[]): void => {
+  fs.writeFileSync(OUTPUT_FILE_PATH, JSON.stringify(data, null, 2));
 };
 
 console.time("process");
 const allCharacters = await fetchAllCharacters();
 const processedCharacters = await processCharacters(allCharacters);
-await writeToFile(processedCharacters);
+writeToFile(processedCharacters);
 console.timeEnd("process");
