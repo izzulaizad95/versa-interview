@@ -7,14 +7,15 @@
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "outDir": "dist",
-    "rootDir": "src",
+    "rootDir": ".",
+    "noImplicitAny": true,
     "paths": {
       "*": ["src/types/*"]
     },
     "moduleResolution": "node"
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "test/**/*.test.ts", "**/*.eslintrc.cjs"],
   "exclude": ["node_modules"]
 }

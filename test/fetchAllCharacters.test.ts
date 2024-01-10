@@ -1,11 +1,11 @@
 import { jest } from "@jest/globals";
 import axios from "axios";
+import { People } from "../src/types";
 
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 axios.get = jest.fn() as jest.MockedFunction<typeof axios.get>;
-const mockFetchAllCharacters =
-  jest.fn<() => { name: string; height: string; gender: string }[]>();
+const mockFetchAllCharacters = jest.fn<() => Promise<People[]>>();
 
 const FIRST_PAGE_ENDPOINT = "https://swapi.dev/api/people?page=1";
 const SECOND_PAGE_ENDPOINT = "https://swapi.dev/api/people?page=2";
@@ -13,9 +13,6 @@ const SECOND_PAGE_ENDPOINT = "https://swapi.dev/api/people?page=2";
 describe("fetchAllCharacters", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    // mockedAxios.get.mockResolvedValue({
-    //   data: [],
-    // });
   });
 
   it("should fetch all characters successfully", async () => {
@@ -37,22 +34,18 @@ describe("fetchAllCharacters", () => {
       },
     };
 
-    mockedAxios.get.mockImplementation((url) => {
+    mockedAxios.get.mockImplementation((url): any => {
       switch (url) {
         case FIRST_PAGE_ENDPOINT:
-          return new Promise(() => {
-            firstResponseData;
-          });
+          return Promise.resolve(firstResponseData);
         case SECOND_PAGE_ENDPOINT:
-          return new Promise(() => {
-            secondResponseData;
-          });
+          return Promise.resolve(secondResponseData);
         default:
           return Promise.reject(new Error("not found"));
       }
     });
 
-    Promise.all([
+    await Promise.all([
       axios.get(FIRST_PAGE_ENDPOINT).then((response) => {
         expect(response.data).toEqual(firstResponseData.data);
       }),
@@ -61,13 +54,15 @@ describe("fetchAllCharacters", () => {
       }),
     ]);
 
-    const fetchAllCharactersResult = [
-      ...firstResponseData.data.results,
-      ...secondResponseData.data.results,
+    const fetchAllCharactersResult: People[] = [
+      ...(firstResponseData.data.results as People[]),
+      ...(secondResponseData.data.results as People[]),
     ];
 
-    mockFetchAllCharacters.mockReturnValueOnce(fetchAllCharactersResult);
-    const result = mockFetchAllCharacters();
+    mockFetchAllCharacters.mockReturnValueOnce(
+      Promise.resolve(fetchAllCharactersResult)
+    );
+    const result = await mockFetchAllCharacters();
 
     expect(result).toHaveLength(4);
     expect(result).toEqual(fetchAllCharactersResult);

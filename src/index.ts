@@ -1,17 +1,11 @@
 import axios from "axios";
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
+
 import { CharacterByGender, People } from "./types";
 import { separateByGender, separateByHeightKnown } from "./utils/separateFn";
 import { sortByHeight, sortByName } from "./utils/sortFn";
+import { writeToFile } from "./utils/writeToFile";
 
 const FIRST_PAGE_ENDPOINT = "https://swapi.dev/api/people?page=1";
-const OUTPUT_FILE_PATH = path.join(
-  fileURLToPath(import.meta.url),
-  "../../",
-  "output.json"
-);
 
 // Get ALL the characters available from the API and categorize them based on their gender.
 export const fetchAllCharacters = async (): Promise<People[]> => {
@@ -19,23 +13,25 @@ export const fetchAllCharacters = async (): Promise<People[]> => {
 
   try {
     const firstResponse = await axios.get(FIRST_PAGE_ENDPOINT);
-    const { count, next, results } = firstResponse.data;
+    const { count, results } = firstResponse.data;
 
-    allCharacters = allCharacters.concat(results);
+    allCharacters = allCharacters.concat(results as People[]);
 
     const totalPages = Math.ceil(count / results.length) - 1;
-    const requests = Array.from({ length: totalPages }, (_, i) =>
-      axios.get(`https://swapi.dev/api/people?page=${i + 2}`)
+    const requests = Array.from(
+      { length: totalPages },
+      async (_, i) =>
+        await axios.get(`https://swapi.dev/api/people?page=${i + 2}`)
     );
 
     const additionalResponses = await Promise.all(requests);
 
-    const additionalResults = additionalResponses.reduce(
+    const additionalResults = additionalResponses.reduce<People[]>(
       (characters, response) => {
         const { results } = response.data;
-        return characters.concat(results);
+        return characters.concat(results as People[]);
       },
-      [] as People[]
+      []
     );
 
     allCharacters = allCharacters.concat(additionalResults);
@@ -71,17 +67,6 @@ export const processCharacters = async (
   return characterByGender;
 };
 
-// Output the result to a file named output.json .
-export const writeToFile = (data: CharacterByGender[]): string => {
-  try {
-    fs.promises.writeFile(OUTPUT_FILE_PATH, JSON.stringify(data, null, 2));
-    return "File written successfully";
-  } catch (error: unknown | any) {
-    console.error(`Error writing file: ${error.message}`);
-    throw error;
-  }
-};
-
 const allCharacters = await fetchAllCharacters();
 const processedCharacters = await processCharacters(allCharacters);
-writeToFile(processedCharacters);
+await writeToFile("output.json", processedCharacters);

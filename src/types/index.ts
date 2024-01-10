@@ -1,4 +1,4 @@
-type People = {
+interface People {
   name: string;
   birth_year?: string;
   eye_color?: string;
@@ -15,9 +15,9 @@ type People = {
   url?: string;
   created?: string;
   edited?: string;
-};
+}
 
-type Film = {
+interface Film {
   title: string;
   episode_id: number;
   opening_crawl: string;
@@ -32,9 +32,9 @@ type Film = {
   url: string;
   created: string;
   edited: string;
-};
+}
 
-type Starship = {
+interface Starship {
   name: string;
   model: string;
   starship_class: string;
@@ -53,9 +53,9 @@ type Starship = {
   url: string;
   created: string;
   edited: string;
-};
+}
 
-type Vehicle = {
+interface Vehicle {
   name: string;
   model: string;
   vehicle_class: string;
@@ -72,9 +72,9 @@ type Vehicle = {
   url: string;
   created: string;
   edited: string;
-};
+}
 
-type Species = {
+interface Species {
   name: string;
   classification: string;
   designation: string;
@@ -90,9 +90,9 @@ type Species = {
   url: string;
   created: string;
   edited: string;
-};
+}
 
-type Planet = {
+interface Planet {
   name: string;
   diameter: string;
   rotation_period: string;
@@ -107,24 +107,24 @@ type Planet = {
   url: string;
   created: string;
   edited: string;
-};
+}
 
-type CharacterByGender = {
+interface CharacterByGender {
   gender: string;
   characters: CharacterInfo[];
-};
+}
 
-type CharacterInfo = {
+interface CharacterInfo {
   name: string;
   height: number;
   gender?: Gender | Unknown;
-};
+}
 
 type Gender = "male" | "female";
 
 type Unknown = "unknown" | "none" | "n/a";
 
-export {
+export type {
   CharacterByGender,
   CharacterInfo,
   Film,
@@ -136,4 +136,3 @@ export {
   Unknown,
   Vehicle,
 };
-

@@ -1,0 +1,13 @@
+# Nuxt.js build / generate output
+.nuxt
+dist
+
+# Dependency directories
+node_modules/
+node_modules
+jspm_packages/
+
+
+#output file
+output.json
+output_test.json

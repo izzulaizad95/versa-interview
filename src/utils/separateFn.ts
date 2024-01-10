@@ -4,12 +4,12 @@ import {
   Gender,
   People,
   Unknown,
-} from "index";
+} from "../types/index";
 
 const separateByGender = async (
   characters: People[]
 ): Promise<CharacterByGender[]> => {
-  let charactersByGender: CharacterByGender[] = [];
+  const charactersByGender: CharacterByGender[] = [];
   const genderObj: Record<Gender | Unknown, CharacterInfo[]> = {} as Record<
     Gender | Unknown,
     CharacterInfo[]
@@ -48,7 +48,7 @@ const separateByHeightKnown = async (
   for (let i = 0; i < characters.length; i++) {
     const currCharacter = characters[i];
 
-    if (!isNaN(currCharacter.height) || !currCharacter.height === null) {
+    if (!isNaN(currCharacter.height) && !(currCharacter.height == null)) {
       knownHeight.push(currCharacter);
     } else {
       unknownHeight.push(currCharacter);
@@ -58,3 +58,4 @@ const separateByHeightKnown = async (
 };
 
 export { separateByGender, separateByHeightKnown };
+

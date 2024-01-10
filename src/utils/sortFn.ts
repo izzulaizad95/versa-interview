@@ -1,4 +1,4 @@
-import { CharacterInfo } from "index";
+import { CharacterInfo } from "../types/index";
 
 const sortByHeight = async (
   characters: CharacterInfo[]
@@ -13,4 +13,3 @@ const sortByName = async (
 };
 
 export { sortByHeight, sortByName };
-
