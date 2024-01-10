@@ -15,7 +15,7 @@ export const writeToFile = async (
 
   try {
     await fs.writeFile(OUTPUT_FILE_PATH, JSON.stringify(data, null, 2));
-    return "File written successfully";
+    return "File written successfully!";
   } catch (error: unknown | any) {
     console.error(`Error writing file: ${error.message}`);
     throw error;

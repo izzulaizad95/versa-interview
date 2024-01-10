@@ -67,6 +67,15 @@ export const processCharacters = async (
   return characterByGender;
 };
 
-const allCharacters = await fetchAllCharacters();
-const processedCharacters = await processCharacters(allCharacters);
-await writeToFile("output.json", processedCharacters);
+console.time("Runtime");
+
+try {
+  const allCharacters = await fetchAllCharacters();
+  const processedCharacters = await processCharacters(allCharacters);
+  const writeStatus = await writeToFile("output.json", processedCharacters);
+  console.log(writeStatus);
+} catch (error) {
+  console.error("An error occurred:", error);
+}
+
+console.timeEnd("Runtime");
