@@ -117,11 +117,12 @@ type CharacterByGender = {
 type CharacterInfo = {
   name: string;
   height: number;
+  gender?: Gender | Unknown;
 };
 
 type Gender = "male" | "female";
 
-type Unknown = "unknown" | "n/a";
+type Unknown = "unknown" | "none" | "n/a";
 
 export {
   CharacterByGender,
@@ -129,9 +130,10 @@ export {
   Film,
   Gender,
   People,
-  PeopleMock,
   Planet,
   Species,
   Starship,
+  Unknown,
   Vehicle,
 };
+

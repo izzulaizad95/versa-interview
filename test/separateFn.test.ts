@@ -1,10 +1,10 @@
 import { CharacterInfo, People } from "../src/types";
 import {
+  separateByGender,
   separateByHeightKnown,
-  separateMaleFemale,
 } from "../src/utils/separateFn";
 
-describe("separateMaleFemale", () => {
+describe("separateByGender", () => {
   const characters: People[] = [
     { name: "Luke Skywalker", height: "172", gender: "male" },
     { name: "Leia Organa", height: "150", gender: "female" },
@@ -13,14 +13,20 @@ describe("separateMaleFemale", () => {
   ];
 
   it("should separate male and female characters", async () => {
-    const separatedCharacters = await separateMaleFemale(characters);
+    const separatedCharacters = await separateByGender(characters);
     expect(separatedCharacters).toEqual([
-      [
-        { name: "Luke Skywalker", height: 172 },
-        { name: "Darth Vader", height: 202 },
-        { name: "Han Solo", height: 180 },
-      ],
-      [{ name: "Leia Organa", height: 150 }],
+      {
+        gender: "female",
+        characters: [{ name: "Leia Organa", height: 150 }],
+      },
+      {
+        gender: "male",
+        characters: [
+          { name: "Luke Skywalker", height: 172 },
+          { name: "Darth Vader", height: 202 },
+          { name: "Han Solo", height: 180 },
+        ],
+      },
     ]);
   });
 });
@@ -28,7 +34,6 @@ describe("separateMaleFemale", () => {
 describe("separateByHeightKnown", () => {
   const characters: CharacterInfo[] = [
     { name: "Luke Skywalker", height: 172 },
-    { name: "Leia Organa", height: 150 },
     { name: "Darth Vader", height: 202 },
     { name: "Han Solo", height: NaN },
   ];
@@ -38,7 +43,6 @@ describe("separateByHeightKnown", () => {
     expect(separatedCharacters).toEqual([
       [
         { name: "Luke Skywalker", height: 172 },
-        { name: "Leia Organa", height: 150 },
         { name: "Darth Vader", height: 202 },
       ],
       [{ name: "Han Solo", height: NaN }],

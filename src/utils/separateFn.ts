@@ -1,10 +1,19 @@
-import { CharacterInfo, People } from "index";
+import {
+  CharacterByGender,
+  CharacterInfo,
+  Gender,
+  People,
+  Unknown,
+} from "index";
 
-const separateMaleFemale = async (
+const separateByGender = async (
   characters: People[]
-): Promise<CharacterInfo[][]> => {
-  const maleCharacters: CharacterInfo[] = [];
-  const femaleCharacters: CharacterInfo[] = [];
+): Promise<CharacterByGender[]> => {
+  let charactersByGender: CharacterByGender[] = [];
+  const genderObj: Record<Gender | Unknown, CharacterInfo[]> = {} as Record<
+    Gender | Unknown,
+    CharacterInfo[]
+  >;
   for (let i = 0; i < characters.length; i++) {
     const currCharacter = characters[i];
     const characterInfo = {
@@ -12,13 +21,23 @@ const separateMaleFemale = async (
       height: parseInt(currCharacter.height),
     };
 
-    if (currCharacter.gender.toLowerCase() === "male") {
-      maleCharacters.push(characterInfo);
+    if (
+      genderObj[currCharacter.gender] === null ||
+      genderObj[currCharacter.gender] === undefined
+    ) {
+      genderObj[currCharacter.gender] = [characterInfo];
     } else {
-      femaleCharacters.push(characterInfo);
+      genderObj[currCharacter.gender].push(characterInfo);
     }
   }
-  return [maleCharacters, femaleCharacters];
+  const genderArray = Object.keys(genderObj).sort();
+  for (let i = 0; i <= genderArray.length - 1; i++) {
+    charactersByGender.push({
+      gender: genderArray[i],
+      characters: genderObj[genderArray[i] as Gender | Unknown],
+    });
+  }
+  return charactersByGender;
 };
 
 const separateByHeightKnown = async (
@@ -38,4 +57,4 @@ const separateByHeightKnown = async (
   return [knownHeight, unknownHeight];
 };
 
-export { separateByHeightKnown, separateMaleFemale };
+export { separateByGender, separateByHeightKnown };
