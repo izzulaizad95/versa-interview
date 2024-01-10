@@ -22,6 +22,6 @@ describe("writeToFile", () => {
         ],
       },
     ]);
-    expect(result).toEqual("File written successfully");
+    expect(result).toEqual("File written successfully!");
   });
 });
