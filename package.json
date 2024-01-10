@@ -8,7 +8,8 @@
     "test": "node --no-warnings --experimental-vm-modules node_modules/jest/bin/jest.js",
     "dev": "tsx watch src/index.ts",
     "build": "tsc -p tsconfig.build.json",
-    "lint:fix": "eslint --fix src/**/*.ts"
+    "lint:fix": "eslint --fix src/**/*.ts",
+    "prepush": "npm run build && npm run lint:fix && npm run test"
   },
   "jest": {
     "transform": {},
